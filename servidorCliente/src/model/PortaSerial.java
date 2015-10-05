@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.TooManyListenersException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -62,19 +64,19 @@ public class PortaSerial implements SerialPortEventListener {
     }
     
     public void escreverDados(String dados){
-        byte[] dado = new byte[1];
         String str;
         try {            
-            this.saida = portaSerial.getOutputStream();
-            this.saida.write(dados.getBytes());
+            this.saida = portaSerial.getOutputStream();     
             do{ 
+                this.saida.write(dados.getBytes());                
+                Thread.sleep(1000);                
                 str = null;                 
                 str = lerDados();
                 if (str == null){
                     str = "_-_-";
                 }
             }while(!str.substring(0, 4).equals(dados.substring(0, 4)));
-        } catch (IOException ex) {
+        } catch (IOException | InterruptedException ex) {
             System.out.println("Problemas na execução do comando.");
             ex.printStackTrace();
         }
@@ -111,5 +113,5 @@ public class PortaSerial implements SerialPortEventListener {
             System.out.println("Problemas na leitura dos dados.");
             ex.printStackTrace();
         }
-    }      
+    }
 }

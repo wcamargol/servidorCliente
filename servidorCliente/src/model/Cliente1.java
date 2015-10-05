@@ -6,7 +6,7 @@ package model;
  * Walter Luiz de Camargo - 434094
  * Itapevi
  * 
- * Programa Cliente de Chat
+ * Programa Cliente1 de Chat
  * Solicita conexao a um Chat do programa Servidor, envia e recebe mensagens
  */
 
@@ -33,11 +33,11 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 
-public class Cliente extends JFrame{
+public class Cliente1 extends JFrame{
 	
 	//esecuta programa cliente
 	public static void main(String[] args) {
-		Cliente cliente = new Cliente();// cria o cliente
+		Cliente1 cliente = new Cliente1();// cria o cliente
 		cliente.setVisible(true);//torna visivel
 		cliente.esperaMsg();//aguarda multicast do servidor
 	}
@@ -57,8 +57,8 @@ public class Cliente extends JFrame{
 	private boolean conectado = true;
         private Serializador sD;
 	
-	//Construtor Cliente
-	public Cliente(){
+	//Construtor Cliente1
+	public Cliente1(){
             				
 		super( "CHAT RC" );
 		this.sD = new Serializador();
@@ -141,7 +141,7 @@ public class Cliente extends JFrame{
 					} //fim do metodo windowClosing
 				} //fim da classe interna windowAdapter
 		); //fim da chamada a addWindowListener
-	} //fim do construtor Cliente
+	} //fim do construtor Cliente1
 	
 	//Conectar ouve solicitacoes do usuario para conectar ao servidor
 	private class Conectar implements ActionListener{
@@ -247,4 +247,4 @@ public class Cliente extends JFrame{
                 //fim da classe interna runnable
                 );//fim da chamada para SwingUtilities.invokeLater	
 	}//fim do metodo mostraMsg	
-}//fim da classe Cliente
+}//fim da classe Cliente1

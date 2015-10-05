@@ -134,7 +134,4 @@ public class SupervisorioSSHouse extends javax.swing.JFrame implements Runnable 
             this.mensagem = this.portaSerial.lerDados();
         }
     }
-
-    
-   
 }

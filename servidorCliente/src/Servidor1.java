@@ -1,5 +1,3 @@
-package controller;
-
 
 import model.PortaSerial;
 import view.SupervisorioSSHouse;
@@ -11,7 +9,7 @@ import view.SupervisorioSSHouse;
  */
 
 
-public class Servidor {
+public class Servidor1 {
     
     //executa o programa servidor
     public static void main( String args[] ) throws InterruptedException{
@@ -26,4 +24,4 @@ public class Servidor {
     } //fim de main*/
 
     
-} //fim da classe Servidor
+} //fim da classe Servidor1
