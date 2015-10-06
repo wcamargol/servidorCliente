@@ -47,8 +47,7 @@ public class Server implements Runnable{
     }
     
     public void esperaMsg(){
-        //Mensagem mensagem = new Mensagem();
-                
+        //Mensagem mensagem = new Mensagem();                
         Scanner entrada = null;
         PrintStream saida = null;
         try {
@@ -58,7 +57,7 @@ public class Server implements Runnable{
             saida.println(this.portaSerial.lerDados());
             entrada.close();
             saida.close();
-        } catch (IOException /*| InterruptedException*/ ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }        
     } //fim do metodo esperaMsg

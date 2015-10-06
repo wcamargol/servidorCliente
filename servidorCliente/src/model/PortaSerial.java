@@ -1,9 +1,11 @@
 package model;
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Esta classe faz a leitura e escrita na porta serial especificada.
+ * ela faz parte de um sistema criado para automação residencial  
+ * e do Trabalho de conclusão para curso de Bacharelado em sistemas 
+ * de informação da UFSCar
+ * Autor: Walter Luiz de Camargo
  */
 
 
@@ -20,10 +22,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.TooManyListenersException;
 
-/**
- *
- * @author lubuntu
- */
 public class PortaSerial implements SerialPortEventListener {
     private CommPortIdentifier portaId;
     private SerialPort portaSerial;
@@ -78,7 +76,6 @@ public class PortaSerial implements SerialPortEventListener {
             System.out.println("Problemas na execução do comando.");
             ex.printStackTrace();
         }
-        System.out.println("acabou");
     }
     
     public SerialPort getSerialPort(){
