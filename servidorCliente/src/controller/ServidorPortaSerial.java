@@ -10,11 +10,11 @@ import java.net.Socket;
 import java.util.Scanner;
 import model.PortaSerial;
 
-public class Server implements Runnable{
+public class ServidorPortaSerial implements Runnable{
     private final Socket connSocket;
     private final PortaSerial portaSerial;
 
-    public Server(Socket cliente){
+    public ServidorPortaSerial(Socket cliente){
         this.connSocket = cliente;        
         this.portaSerial = new PortaSerial("/dev/ttyUSB0",2000);
     }
@@ -35,7 +35,7 @@ public class Server implements Runnable{
                 Socket cliente = null;
                 cliente = servidor.accept();
                 // Cria uma thread do servidor para tratar a conexão
-                Server threadServidor = new Server(cliente);
+                ServidorPortaSerial threadServidor = new ServidorPortaSerial(cliente);
                 Thread thread = new Thread(threadServidor);
                 // Inicia a thread para o cliente conectado
                 thread.start(); 
