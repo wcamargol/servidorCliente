@@ -26,8 +26,8 @@ public class ServidorPortaSerial implements  Runnable{
             
             servidor = new ServerSocket (12345);
             clienteSupervisorio = new ClienteSupervisorio();
-            Thread threadCliente = new Thread(clienteSupervisorio);
-            threadCliente.start();
+            Thread threadClienteSupervisorio = new Thread(clienteSupervisorio);
+            threadClienteSupervisorio.start();
             while (true) {
                 Socket socketCliente = null;
                 socketCliente = servidor.accept();
