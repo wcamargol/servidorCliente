@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.TooManyListenersException;
 
-public class PortaSerial implements SerialPortEventListener {
+public class PortaSerial implements SerialPortEventListener, Runnable {
     private CommPortIdentifier portaId;
     private SerialPort portaSerial;
     private BufferedReader entrada;
@@ -43,15 +43,11 @@ public class PortaSerial implements SerialPortEventListener {
             this.portaSerial.notifyOnDataAvailable(true);
         } catch (NoSuchPortException ex) {
             System.out.println("Porta não encontrada.");
-            System.out.println("Erro: " + ex.toString());            
         } catch (PortInUseException ex) {
             System.out.println("Não foi possivel abrir a porta.");
-            //System.out.println("Erro: " + ex.toString());
-            ex.printStackTrace();
         } catch (UnsupportedCommOperationException | TooManyListenersException ex) {
             this.portaSerial.close();
-            System.out.println("Problemas na configuração da porta.");
-            System.out.println("Erro: " + ex.toString());        
+            ex.printStackTrace();
         }
     }       
     
@@ -74,7 +70,6 @@ public class PortaSerial implements SerialPortEventListener {
             }while(!str.substring(0, 4).equals(dados.substring(0, 4)));
         } catch (IOException | InterruptedException ex) {
             System.out.println("Problemas na execução do comando.");
-            ex.printStackTrace();
         }
     }
     
@@ -108,7 +103,11 @@ public class PortaSerial implements SerialPortEventListener {
             }
         }catch (Exception ex) {
             System.out.println("Problemas na leitura dos dados.");
-            ex.printStackTrace();
         }
+    }
+
+    @Override
+    public void run() {
+        
     }
 }

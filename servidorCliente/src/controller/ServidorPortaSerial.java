@@ -1,4 +1,4 @@
-/*
+/**
  * Código adaptado de http://pt.stackoverflow.com/questions/43127/multi-thread-em-socket-java
  */
 package controller;
@@ -10,63 +10,65 @@ import java.net.Socket;
 import java.util.Scanner;
 import model.PortaSerial;
 
-public class ServidorPortaSerial implements Runnable{
+public class ServidorPortaSerial implements  Runnable{
     private final Socket connSocket;
-    private final PortaSerial portaSerial;
-
-    public ServidorPortaSerial(Socket cliente){
-        this.connSocket = cliente;        
-        this.portaSerial = new PortaSerial("/dev/ttyUSB0",2000);
+    private static PortaSerial portaSerial;
+    private static ClienteSupervisorio clienteSupervisorio;
+    
+    private ServidorPortaSerial(Socket cliente){
+        this.connSocket = cliente;         
     }
-
-    public static void main(String[] args){     
-
-        //Cria um socket na porta 12345
+    
+    public static void main(String[] args){
         ServerSocket servidor = null;
+        portaSerial = new PortaSerial("/dev/ttyUSB0", 2000);
         try {
+            
             servidor = new ServerSocket (12345);
-            System.out.println("Porta 12345 aberta!");
-            // Aguarda alguém se conectar. A execução do servidor
-            // fica bloqueada na chamada do método accept da classe
-            // ServerSocket. Quando alguém se conectar ao servidor, o
-            // método desbloqueia e retorna com um objeto da classe
-            // Socket, que é uma porta da comunicação.
+            clienteSupervisorio = new ClienteSupervisorio();
+            Thread threadCliente = new Thread(clienteSupervisorio);
+            threadCliente.start();
             while (true) {
-                Socket cliente = null;
-                cliente = servidor.accept();
+                Socket socketCliente = null;
+                socketCliente = servidor.accept();
                 // Cria uma thread do servidor para tratar a conexão
-                ServidorPortaSerial threadServidor = new ServidorPortaSerial(cliente);
-                Thread thread = new Thread(threadServidor);
+                ServidorPortaSerial threadServidor = new ServidorPortaSerial(socketCliente);
+                Thread thread = new Thread(threadServidor);                
                 // Inicia a thread para o cliente conectado
                 thread.start(); 
             }            
+       }catch (IOException ex) {
+            //portaSerial.fecharPorta();
+            ex.printStackTrace();
+        }
+    }
+    
+    public void trataRequisicaoCliente(){
+        
+        Scanner vemCliente = null;
+        PrintStream vaiCliente = null;
+        String strEntrada, strSaida;
+        try {
+            vemCliente = new Scanner(this.connSocket.getInputStream());       
+            vaiCliente = new PrintStream(this.connSocket.getOutputStream());        
+            strEntrada = vemCliente.nextLine();
+            System.out.println(strEntrada);
+            if (!strEntrada.equals("?")){
+                portaSerial.escreverDados(strEntrada);
+            }
+            strSaida = portaSerial.lerDados();
+            System.out.println(strSaida);
+            vaiCliente.println(strSaida);
+            vemCliente.close();
+            vaiCliente.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        
     }
     
-    public void esperaMsg(){
-        //Mensagem mensagem = new Mensagem();                
-        Scanner entrada = null;
-        PrintStream saida = null;
-        try {
-            entrada = new Scanner(this.connSocket.getInputStream());        
-            saida = new PrintStream(this.connSocket.getOutputStream());
-            this.portaSerial.escreverDados(entrada.nextLine());
-            saida.println(this.portaSerial.lerDados());
-            entrada.close();
-            saida.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }        
-    } //fim do metodo esperaMsg
-
-    /* A classe Thread, que foi instancia no servidor, implementa Runnable.
-       Então você terá que implementar sua lógica de troca de mensagens dentro deste método 'run'.
-    */
     public void run(){
-        esperaMsg();
-        this.portaSerial.fecharPorta();        
+        clienteSupervisorio.pausar();
+        trataRequisicaoCliente();
+        clienteSupervisorio.prosseguir();
     }
 }
