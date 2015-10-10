@@ -67,7 +67,7 @@ public class PortaSerial implements SerialPortEventListener, Runnable {
                 if (str == null){
                     str = "_-_-";
                 }
-            }while(!str.substring(0, 4).equals(dados.substring(0, 4)));
+            }while(!str.equals(dados.substring(0,1)));
         } catch (IOException | InterruptedException ex) {
             System.out.println("Problemas na execução do comando.");
         }
