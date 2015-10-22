@@ -57,7 +57,7 @@ public class ClienteSupervisorio implements Runnable{
             try {
                 this.connSocket = new Socket("127.0.0.1", 12345);
                 enviaComando("?");
-                Thread.sleep(1000);                
+                Thread.sleep(500);                
             } catch (IOException | InterruptedException ex) {
                 System.exit(1);
             }finally{

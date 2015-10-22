@@ -61,7 +61,7 @@ public class PortaSerial implements SerialPortEventListener, Runnable {
             this.saida = portaSerial.getOutputStream();     
             do{ 
                 this.saida.write(dados.getBytes());                
-                Thread.sleep(1000);                
+                Thread.sleep(100);                
                 str = null;                 
                 str = lerDados();
                 if (str == null){
