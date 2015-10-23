@@ -4,8 +4,17 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/SSHouse?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/SSHouse</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.show_sql">true</property>
+    <mapping class="model.beans.AlarmeBean"/>
+    <mapping class="model.beans.AmbienteBean"/>
+    <mapping class="model.beans.EquipamentoBean"/>
+    <mapping class="model.beans.EventoBean"/>
+    <mapping class="model.beans.EventoIdBean"/>
+    <mapping class="model.beans.MoradorBean"/>
+    <mapping class="model.beans.OperacaoBean"/>
+    <mapping class="model.beans.OperacaoIdBean"/>
   </session-factory>
 </hibernate-configuration>
