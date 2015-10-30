@@ -4,11 +4,13 @@ package model.beans;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,6 +29,9 @@ public class SensorBean  implements Serializable {
     @ManyToOne
     @JoinColumn(name="codigoAmbiente")
     private AmbienteBean ambiente;
+    
+    @OneToMany(mappedBy="sensor",fetch=FetchType.LAZY)
+    private Collection<AtuadorBean> atuador;
     
     @ManyToMany
     @JoinTable(name="Evento", schema="SSHouse",
@@ -105,4 +110,12 @@ public class SensorBean  implements Serializable {
     public void setAlarme(Collection<AlarmeBean> alarme) {
         this.alarme = alarme;
     }    
+
+    public Collection<AtuadorBean> getAtuador() {
+        return atuador;
+    }
+
+    public void setAtuador(Collection<AtuadorBean> atuador) {
+        this.atuador = atuador;
+    }
 }

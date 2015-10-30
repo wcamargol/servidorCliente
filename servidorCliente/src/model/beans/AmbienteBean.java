@@ -22,8 +22,12 @@ public class AmbienteBean  implements Serializable {
     @Column(name = "codigoAmbiente")
     private String codigoAmbiente;
     private String descricaoAmbiente;
+    
     @OneToMany(mappedBy="ambiente",fetch=FetchType.LAZY)
-    private Collection<EquipamentoBean> equipamento;
+    private Collection<SensorBean> sensor;
+    
+    @OneToMany(mappedBy="ambiente",fetch=FetchType.LAZY)
+    private Collection<AtuadorBean> atuador;
 
     public String getCodigoAmbiente() {
         return codigoAmbiente;
@@ -41,11 +45,19 @@ public class AmbienteBean  implements Serializable {
         this.descricaoAmbiente = descricaoAmbiente;
     }
 
-    public Collection<EquipamentoBean> getEquipamento() {
-        return equipamento;
+    public Collection<SensorBean> getSensor() {
+        return sensor;
     }
 
-    public void setEquipamento(Collection<EquipamentoBean> equipamento) {
-        this.equipamento = equipamento;
+    public void setSensor(Collection<SensorBean> sensor) {
+        this.sensor = sensor;
     }    
+
+    public Collection<AtuadorBean> getAtuador() {
+        return atuador;
+    }
+
+    public void setAtuador(Collection<AtuadorBean> atuador) {
+        this.atuador = atuador;
+    }
 }

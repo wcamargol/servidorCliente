@@ -3,7 +3,10 @@ package controller;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
+import model.beans.SensorBean;
+import model.dao.SensorMySQLDAO;
 
 public class ClienteSupervisorio implements Runnable{
 
@@ -52,11 +55,17 @@ public class ClienteSupervisorio implements Runnable{
 
     @Override
     public void run() {
+        SensorMySQLDAO sensorMySQLDAO = new SensorMySQLDAO();
+        List listaSensores = sensorMySQLDAO.listSensorBean(); 
+        SensorBean sensorBean = null;
         while(true){
             threadPausou();
             try {
                 this.connSocket = new Socket("127.0.0.1", 12345);
-                enviaComando("?");
+                for(Object obj:listaSensores){
+                    sensorBean = (SensorBean) obj; 
+                    enviaComando("?"+sensorBean.getPinoArduino());
+                }                
                 Thread.sleep(500);                
             } catch (IOException | InterruptedException ex) {
                 System.exit(1);

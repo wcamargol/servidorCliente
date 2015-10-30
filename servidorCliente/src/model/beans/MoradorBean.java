@@ -31,8 +31,8 @@ public class MoradorBean  implements Serializable {
     @ManyToMany
     @JoinTable(name="Operacao", schema="SSHouse",
         joinColumns=@JoinColumn(name="login"),
-        inverseJoinColumns=@JoinColumn(name="codigoEquipamento"))
-    private Collection<EquipamentoBean> equipamento;
+        inverseJoinColumns=@JoinColumn(name="codigoAtuador"))
+    private Collection<AtuadorBean> atuador;
     
     public String getLogin() {
         return login;
@@ -82,11 +82,11 @@ public class MoradorBean  implements Serializable {
         this.senha = new Hash().getMD5(senha);
     }
 
-    public Collection<EquipamentoBean> getEquipamento() {
-        return equipamento;
+    public Collection<AtuadorBean> getAtuador() {
+        return atuador;
     }
 
-    public void setEquipamento(Collection<EquipamentoBean> equipamento) {
-        this.equipamento = equipamento;
+    public void setAtuador(Collection<AtuadorBean> atuador) {
+        this.atuador = atuador;
     }
 }

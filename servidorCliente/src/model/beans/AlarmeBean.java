@@ -22,8 +22,8 @@ public class AlarmeBean  implements Serializable {
     @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(name="Evento", schema="SSHouse",
         joinColumns=@JoinColumn(name="codigoAlarme"),
-        inverseJoinColumns=@JoinColumn(name="codigoEquipamento"))
-    private Collection<EquipamentoBean> equipamento;
+        inverseJoinColumns=@JoinColumn(name="codigoSensor"))
+    private Collection<SensorBean> sensor;
 
     public String getCodigoAlarme() {
         return codigoAlarme;
@@ -41,12 +41,12 @@ public class AlarmeBean  implements Serializable {
         this.descricaoAlarme = descricaoAlarme;
     }
 
-    public Collection<EquipamentoBean> getEquipamento() {
-        return equipamento;
+    public Collection<SensorBean> getSensor() {
+        return sensor;
     }
 
-    public void setEquipamento(Collection<EquipamentoBean> equipamento) {
-        this.equipamento = equipamento;
+    public void setSensor(Collection<SensorBean> sensor) {
+        this.sensor = sensor;
     }    
 }
 
