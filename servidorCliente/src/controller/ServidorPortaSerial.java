@@ -21,20 +21,33 @@ public class ServidorPortaSerial implements  Runnable{
     
     public static void main(String[] args){
         ServerSocket servidor = null;
+        /**
+         * Inicializa a porta serial 
+         */
         portaSerial = new PortaSerial("/dev/ttyUSB0", 2000);
         try {
-            
+            /**
+             * Estabelece a porta para a comunicacao com os clientes
+             */
             servidor = new ServerSocket (12345);
+            /**
+             * Cria o cliente para o processo supervisorio
+             */
             clienteSupervisorio = new ClienteSupervisorio();
             Thread threadClienteSupervisorio = new Thread(clienteSupervisorio);
             threadClienteSupervisorio.start();
+            
             while (true) {
                 Socket socketCliente = null;
                 socketCliente = servidor.accept();
-                // Cria uma thread do servidor para tratar a conexão
+                /**
+                 * Cria uma thread do servidor para tratar a conexão
+                 */
                 ServidorPortaSerial threadServidor = new ServidorPortaSerial(socketCliente);
                 Thread thread = new Thread(threadServidor);                
-                // Inicia a thread para o cliente conectado
+                /**
+                 * Inicia a thread para o cliente conectado
+                 */
                 thread.start(); 
             }            
        }catch (IOException ex) {
@@ -44,31 +57,53 @@ public class ServidorPortaSerial implements  Runnable{
     }
     
     public void trataRequisicaoCliente(){
-        
-        Scanner vemCliente = null;
-        PrintStream vaiCliente = null;
+        /**
+         * Objeto para leitura das requisicoes do cliente
+         */
+        Scanner vemDoCliente = null;
+        /**
+         * Objeto para resposta aos cliente
+         */
+        PrintStream vaiParaCliente = null;
         String strEntrada, strSaida;
         try {
-            vemCliente = new Scanner(this.connSocket.getInputStream());       
-            vaiCliente = new PrintStream(this.connSocket.getOutputStream());        
-            strEntrada = vemCliente.nextLine();
-            System.out.println(strEntrada);
-            if (!strEntrada.equals("?")){
-                portaSerial.escreverDados(strEntrada);
-            }
+            /**
+             * variavel que pega a requisicao do cliente
+             */
+            vemDoCliente = new Scanner(this.connSocket.getInputStream()); 
+            /**
+             * variavel que escreve a resposta para ao cliente
+             */
+            vaiParaCliente = new PrintStream(this.connSocket.getOutputStream());        
+            strEntrada = vemDoCliente.nextLine();
+            /**
+             * Le os dados da porta serial
+             */            
             strSaida = portaSerial.lerDados();
-            System.out.println(strSaida);
-            vaiCliente.println(strSaida);
-            vemCliente.close();
-            vaiCliente.close();
+            /**
+             * Entrega os dados para o cliente
+             */
+            vaiParaCliente.println(strSaida);            
         } catch (IOException ex) {
             ex.printStackTrace();
+        }finally{
+            vemDoCliente.close();
+            vaiParaCliente.close();
         }
     }
     
     public void run(){
+        /**
+         * pausa o cliente do processo supervisorio
+         */
         clienteSupervisorio.pausar();
+        /**
+         * trata a requisicao do cliente
+         */
         trataRequisicaoCliente();
+        /**
+         * reinicia o processo supervisorio
+         */
         clienteSupervisorio.prosseguir();
     }
 }
