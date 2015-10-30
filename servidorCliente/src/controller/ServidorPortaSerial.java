@@ -8,6 +8,8 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.PortaSerial;
 
 public class ServidorPortaSerial implements  Runnable{
@@ -49,7 +51,7 @@ public class ServidorPortaSerial implements  Runnable{
                  * Inicia a thread para o cliente conectado
                  */
                 thread.start(); 
-            }            
+            }                 
        }catch (IOException ex) {
             //portaSerial.fecharPorta();
             ex.printStackTrace();
@@ -65,7 +67,7 @@ public class ServidorPortaSerial implements  Runnable{
          * Objeto para resposta aos cliente
          */
         PrintStream vaiParaCliente = null;
-        String strEntrada, strSaida;
+        String strEntrada, strSaida = null;
         try {
             /**
              * variavel que pega a requisicao do cliente
@@ -76,6 +78,7 @@ public class ServidorPortaSerial implements  Runnable{
              */
             vaiParaCliente = new PrintStream(this.connSocket.getOutputStream());        
             strEntrada = vemDoCliente.nextLine();
+            portaSerial.escreverDados(strEntrada);
             /**
              * Le os dados da porta serial
              */            

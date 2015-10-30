@@ -30,7 +30,6 @@ public class ClienteSupervisorio implements Runnable{
            entrada.close();
            saida.close();
         }
-        System.out.println(respostaServidor);
         return respostaServidor;
     }
     
@@ -58,15 +57,17 @@ public class ClienteSupervisorio implements Runnable{
         SensorMySQLDAO sensorMySQLDAO = new SensorMySQLDAO();
         List listaSensores = sensorMySQLDAO.listSensorBean(); 
         SensorBean sensorBean = null;
+        String comando = null;
         while(true){
             threadPausou();
             try {
                 this.connSocket = new Socket("127.0.0.1", 12345);
                 for(Object obj:listaSensores){
                     sensorBean = (SensorBean) obj; 
-                    enviaComando("?"+sensorBean.getPinoArduino());
+                    comando = "?"+sensorBean.getPinoArduino();
+                    enviaComando(comando);
                 }                
-                Thread.sleep(500);                
+               Thread.sleep(10);                
             } catch (IOException | InterruptedException ex) {
                 System.exit(1);
             }finally{

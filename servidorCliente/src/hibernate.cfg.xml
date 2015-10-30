@@ -10,11 +10,12 @@
     <property name="hibernate.show_sql">true</property>
     <mapping class="model.beans.AlarmeBean"/>
     <mapping class="model.beans.AmbienteBean"/>
-    <mapping class="model.beans.EquipamentoBean"/>
+    <mapping class="model.beans.AtuadorBean"/>
     <mapping class="model.beans.EventoBean"/>
     <mapping class="model.beans.EventoIdBean"/>
     <mapping class="model.beans.MoradorBean"/>
     <mapping class="model.beans.OperacaoBean"/>
     <mapping class="model.beans.OperacaoIdBean"/>
+    <mapping class="model.beans.SensorBean"/>
   </session-factory>
 </hibernate-configuration>

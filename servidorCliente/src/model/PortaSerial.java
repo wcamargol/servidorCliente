@@ -58,16 +58,9 @@ public class PortaSerial implements SerialPortEventListener, Runnable {
     public void escreverDados(String dados){
         String str;
         try {            
-            this.saida = portaSerial.getOutputStream();     
-            do{ 
+            this.saida = portaSerial.getOutputStream();
                 this.saida.write(dados.getBytes());                
-                Thread.sleep(100);                
-                str = null;                 
-                str = lerDados();
-                if (str == null){
-                    str = "_-_-";
-                }
-            }while(!str.equals(dados.substring(0,1)));
+                Thread.sleep(100);    
         } catch (IOException | InterruptedException ex) {
             System.out.println("Problemas na execução do comando.");
         }
