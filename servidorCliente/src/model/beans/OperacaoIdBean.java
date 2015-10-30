@@ -1,6 +1,5 @@
 package model.beans;
 
-import java.util.Date;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -10,19 +9,19 @@ import javax.persistence.ManyToOne;
 public class OperacaoIdBean  implements java.io.Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "codigoEquipamento")
-    private EquipamentoBean equipamento;
+    @JoinColumn(name = "codigoAtuador")
+    private AtuadorBean atuador;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "login")
     private MoradorBean morador;
     
-    public EquipamentoBean getEquipamento() {
-        return equipamento;
+    public AtuadorBean getAtuador() {
+        return atuador;
     }
 
-    public void setEquipamento(EquipamentoBean equipamento) {
-        this.equipamento = equipamento;
+    public void setAtuador(AtuadorBean atuador) {
+        this.atuador = atuador;
     }
 
     public MoradorBean getMorador() {
