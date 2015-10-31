@@ -6,9 +6,14 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import model.beans.AlarmeBean;
 import model.beans.MoradorBean;
+import model.beans.SensorBean;
 import model.dao.MoradorMySQLDAO;
+import model.dao.SensorMySQLDAO;
 
 /**
  *
@@ -16,19 +21,7 @@ import model.dao.MoradorMySQLDAO;
  */
 public class teste {
     public static void main(String[] args){
-        Runtime run = Runtime.getRuntime();
-        String msg = " isso é um teste de novo";
-        MoradorMySQLDAO moradorMySQLDAO = new MoradorMySQLDAO();
-        List listaMoradores = moradorMySQLDAO.listMoradorBean();
-        MoradorBean moradorBean = null;
-        for(Object obj: listaMoradores){
-            moradorBean = (MoradorBean) obj;
-            try {
-            run.exec("yowsup "+ moradorBean.getCelular()+msg);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+        
         System.exit(0);
     }    
 }

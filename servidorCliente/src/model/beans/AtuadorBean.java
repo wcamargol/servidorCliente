@@ -33,8 +33,8 @@ public class AtuadorBean  implements Serializable {
     @ManyToMany
     @JoinTable(name="Operacao", schema="SSHouse",
         joinColumns=@JoinColumn(name="codigoAtuador"),
-        inverseJoinColumns=@JoinColumn(name="login"))
-    private Collection<MoradorBean> morador;  
+        inverseJoinColumns=@JoinColumn(name="login"))    
+    private Collection<MoradorBean> moradores; 
 
     public String getCodigoAtuador() {
         return codigoAtuador;
@@ -84,19 +84,19 @@ public class AtuadorBean  implements Serializable {
         this.ambiente = ambiente;
     }
 
-    public Collection<MoradorBean> getMorador() {
-        return morador;
-    }
-
-    public void setMorador(Collection<MoradorBean> morador) {
-        this.morador = morador;
-    }
-
     public SensorBean getSensor() {
         return sensor;
     }
 
     public void setSensor(SensorBean sensor) {
         this.sensor = sensor;
+    }
+
+    public Collection<MoradorBean> getMoradores() {
+        return moradores;
+    }
+
+    public void setMoradores(Collection<MoradorBean> moradores) {
+        this.moradores = moradores;
     }
 }
