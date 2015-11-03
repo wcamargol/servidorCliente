@@ -3,6 +3,7 @@ package model.beans;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -18,11 +19,12 @@ import javax.persistence.Table;
 public class SensorBean  implements Serializable {
     
     @Id
+    @Column(name = "codigoSensor")
     private String codigoSensor;
     private String descricaoSensor;
     private String pinoArduino;
-    private String limiteInfAlarme;
-    private String limiteSupAlarme;   
+    private Float limiteInfAlarme;
+    private Float limiteSupAlarme;   
     
     @ManyToOne
     @JoinColumn(name="codigoAmbiente")
@@ -65,19 +67,19 @@ public class SensorBean  implements Serializable {
         this.pinoArduino = pinoArduino;
     }
 
-    public String getLimiteInfAlarme() {
+    public Float getLimiteInfAlarme() {
         return limiteInfAlarme;
     }
 
-    public void setLimiteInfAlarme(String limiteInfAlarme) {
+    public void setLimiteInfAlarme(Float limiteInfAlarme) {
         this.limiteInfAlarme = limiteInfAlarme;
     }
 
-    public String getLimiteSupAlarme() {
+    public Float getLimiteSupAlarme() {
         return limiteSupAlarme;
     }
 
-    public void setLimiteSupAlarme(String limiteSupAlarme) {
+    public void setLimiteSupAlarme(Float limiteSupAlarme) {
         this.limiteSupAlarme = limiteSupAlarme;
     }
 

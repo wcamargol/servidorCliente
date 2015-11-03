@@ -21,6 +21,20 @@ public class ClienteSupervisorio implements Runnable{
     private Socket connSocket;
     private boolean pausar = false;
     
+    private void trataResposta(String reposta, SensorBean sensor){
+        if (sensor.getLimiteInfAlarme()!= null && 
+            Float.valueOf(reposta) >= sensor.getLimiteSupAlarme()){
+            geraAlarme(sensor); 
+            produzEvento(sensor);
+        }else if (sensor.getLimiteInfAlarme()!= null && 
+            Float.valueOf(reposta) <= sensor.getLimiteInfAlarme()){
+            geraAlarme(sensor);
+            produzEvento(sensor);
+        }else{
+            desligaAtuadores(sensor);
+        }
+    }
+    
     private void geraAlarme(SensorBean sensor){
         Runtime run = Runtime.getRuntime();
         String alarme = " "+sensor.getAlarme().getDescricaoAlarme()+
@@ -45,7 +59,8 @@ public class ClienteSupervisorio implements Runnable{
         AtuadorBean atuadorBean = null;
         for(Object obj:listaAtuadores){
             atuadorBean = (AtuadorBean) obj;
-            if (atuadorBean.getSensor().getCodigoSensor().equals(sensor.getCodigoSensor())
+            if (atuadorBean.getSensor() != null 
+                && atuadorBean.getSensor().getCodigoSensor().equals(sensor.getCodigoSensor())
                 && operacao.equals(atuadorBean.getComando())){
                 enviaRequisicao(atuadorBean.getAmbiente().getCodigoAmbiente()+
                     atuadorBean.getCodigoAtuador()+
@@ -76,20 +91,6 @@ public class ClienteSupervisorio implements Runnable{
         acionaAtuadores(sensor, "D");
     }
     
-    private void trataResposta(String reposta, SensorBean sensor){ 
-        if (Integer.parseInt(reposta) 
-            >= Integer.parseInt(sensor.getLimiteSupAlarme())){
-            geraAlarme(sensor); 
-            produzEvento(sensor);
-        }else if (Integer.parseInt(reposta) 
-            <= Integer.parseInt(sensor.getLimiteInfAlarme())){
-            geraAlarme(sensor);
-            produzEvento(sensor);
-        }else{
-            desligaAtuadores(sensor);
-        }
-    }
-    
     public String enviaRequisicao(String str){
         Scanner entrada = null;
         PrintStream saida = null;
@@ -102,7 +103,9 @@ public class ClienteSupervisorio implements Runnable{
             while (entrada.hasNextLine()) {
                 respostaServidor = entrada.nextLine();
             }
-        } catch (IOException ex) {}
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         finally{
            entrada.close();
            saida.close();
@@ -132,9 +135,10 @@ public class ClienteSupervisorio implements Runnable{
     @Override
     public void run() {
         SensorMySQLDAO sensorMySQLDAO = new SensorMySQLDAO();
-        List listaSensores = sensorMySQLDAO.listSensorBean(); 
+        List listaSensores = sensorMySQLDAO.listSensorBean();
         SensorBean sensorBean = null;
-        String requisicao = null;
+        String requisicao = null, 
+            resposta = null;
         while(true){
             threadPausou();
             try {
@@ -142,9 +146,13 @@ public class ClienteSupervisorio implements Runnable{
                 for(Object obj:listaSensores){
                     sensorBean = (SensorBean) obj; 
                     requisicao = "?"+sensorBean.getPinoArduino();
-                    trataResposta(enviaRequisicao(requisicao), sensorBean);
-                }                
-               Thread.sleep(10);                
+                    resposta = enviaRequisicao(requisicao);
+                    Thread.sleep(10);
+                    if (resposta != null && 
+                        (!resposta.equals("L") || !resposta.equals("D"))){
+                        trataResposta(resposta, sensorBean);
+                    }
+                }              
             } catch (IOException | InterruptedException ex) {
                 System.exit(1);
             }finally{

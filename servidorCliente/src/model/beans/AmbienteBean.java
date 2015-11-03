@@ -18,8 +18,7 @@ import javax.persistence.Table;
 @Table(name = "Ambiente")
 public class AmbienteBean  implements Serializable {
     
-    @Id
-    @Column(name = "codigoAmbiente")
+    @Id    
     private String codigoAmbiente;
     private String descricaoAmbiente;
     

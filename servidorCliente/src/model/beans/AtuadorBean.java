@@ -20,7 +20,7 @@ public class AtuadorBean  implements Serializable {
     private String comando;
     private String pinoArduino;
     private String descricaoAtuador;
-    private String requerLogin;
+    private Boolean requerLogin;
     
     @ManyToOne
     @JoinColumn(name="codigoAmbiente")
@@ -68,11 +68,11 @@ public class AtuadorBean  implements Serializable {
         this.descricaoAtuador = descricaoAtuador;
     }
 
-    public String getRequerLogin() {
+    public Boolean getRequerLogin() {
         return requerLogin;
     }
 
-    public void setRequerLogin(String requerLogin) {
+    public void setRequerLogin(Boolean requerLogin) {
         this.requerLogin = requerLogin;
     }
 
