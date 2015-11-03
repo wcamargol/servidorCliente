@@ -1,14 +1,5 @@
 package model;
 
-/*
- * Esta classe faz a leitura e escrita na porta serial especificada.
- * ela faz parte de um sistema criado para automação residencial  
- * e do Trabalho de conclusão para curso de Bacharelado em sistemas 
- * de informação da UFSCar
- * Autor: Walter Luiz de Camargo
- */
-
-
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
@@ -22,7 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.TooManyListenersException;
 
-public class PortaSerial implements SerialPortEventListener, Runnable {
+public class PortaSerial implements SerialPortEventListener {
     private CommPortIdentifier portaId;
     private SerialPort portaSerial;
     private BufferedReader entrada;
@@ -97,10 +88,5 @@ public class PortaSerial implements SerialPortEventListener, Runnable {
         }catch (Exception ex) {
             System.out.println("Problemas na leitura dos dados.");
         }
-    }
-
-    @Override
-    public void run() {
-        
     }
 }

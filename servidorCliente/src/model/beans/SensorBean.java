@@ -23,8 +23,8 @@ public class SensorBean  implements Serializable {
     private String codigoSensor;
     private String descricaoSensor;
     private String pinoArduino;
-    private Float limiteInfAlarme;
-    private Float limiteSupAlarme;   
+    private Float limiteInfAtuacao;
+    private Float limiteSupAtuacao;   
     
     @ManyToOne
     @JoinColumn(name="codigoAmbiente")
@@ -67,20 +67,20 @@ public class SensorBean  implements Serializable {
         this.pinoArduino = pinoArduino;
     }
 
-    public Float getLimiteInfAlarme() {
-        return limiteInfAlarme;
+    public Float getLimiteInfAtuacao() {
+        return limiteInfAtuacao;
     }
 
-    public void setLimiteInfAlarme(Float limiteInfAlarme) {
-        this.limiteInfAlarme = limiteInfAlarme;
+    public void setLimiteInfAtuacao(Float limiteInfAtuacao) {
+        this.limiteInfAtuacao = limiteInfAtuacao;
     }
 
-    public Float getLimiteSupAlarme() {
-        return limiteSupAlarme;
+    public Float getLimiteSupAtuacao() {
+        return limiteSupAtuacao;
     }
 
-    public void setLimiteSupAlarme(Float limiteSupAlarme) {
-        this.limiteSupAlarme = limiteSupAlarme;
+    public void setLimiteSupAtuacao(Float limiteSupAtuacao) {
+        this.limiteSupAtuacao = limiteSupAtuacao;
     }
 
     public AmbienteBean getAmbiente() {

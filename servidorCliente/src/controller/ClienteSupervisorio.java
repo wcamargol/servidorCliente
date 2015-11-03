@@ -22,12 +22,12 @@ public class ClienteSupervisorio implements Runnable{
     private boolean pausar = false;
     
     private void trataResposta(String reposta, SensorBean sensor){
-        if (sensor.getLimiteInfAlarme()!= null && 
-            Float.valueOf(reposta) >= sensor.getLimiteSupAlarme()){
+        if (sensor.getLimiteInfAtuacao()!= null && 
+            Float.valueOf(reposta) >= sensor.getLimiteSupAtuacao()){
             geraAlarme(sensor); 
             produzEvento(sensor);
-        }else if (sensor.getLimiteInfAlarme()!= null && 
-            Float.valueOf(reposta) <= sensor.getLimiteInfAlarme()){
+        }else if (sensor.getLimiteInfAtuacao()!= null && 
+            Float.valueOf(reposta) <= sensor.getLimiteInfAtuacao()){
             geraAlarme(sensor);
             produzEvento(sensor);
         }else{
