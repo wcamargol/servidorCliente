@@ -24,6 +24,8 @@ public class AtuadorMySQLDAO{
                 }
             }catch (HibernateException ex){
                 ex.printStackTrace();
+            }finally{
+                session.close();
             }
         }
         return atuador;
@@ -47,6 +49,7 @@ public class AtuadorMySQLDAO{
     public boolean updateAtuadorBean(AtuadorBean atuador){
         boolean sucesso = false;
         if(atuador != null){
+            session = FabricaSessoes.getSession();
             Transaction tx = null;
             try{
                 tx = session.beginTransaction();
@@ -65,6 +68,7 @@ public class AtuadorMySQLDAO{
     public boolean saveAtuadorBean(AtuadorBean atuador){
         boolean sucesso = false;
         if(atuador != null){
+            session = FabricaSessoes.getSession();
             Transaction tx = null;
             try{
                 tx = session.beginTransaction();
@@ -83,6 +87,7 @@ public class AtuadorMySQLDAO{
     public boolean deleteAtuadorBean(AtuadorBean atuador){
         boolean sucesso = false;
         if(atuador != null){
+            session = FabricaSessoes.getSession();
             Transaction tx = null;
             try{
                 tx = session.beginTransaction();

@@ -20,25 +20,30 @@ public class ClienteSupervisorio implements Runnable{
 
     private Socket connSocket;
     private boolean pausar = false;
+    private SensorBean sensorBean;
+    private String requisicao;
+    private Boolean atuadorLigado;
     
-    private void trataResposta(String reposta, SensorBean sensor){
-        if (sensor.getLimiteInfAtuacao()!= null && 
-            Float.valueOf(reposta) >= sensor.getLimiteSupAtuacao()){
-            geraAlarme(sensor); 
-            produzEvento(sensor);
-        }else if (sensor.getLimiteInfAtuacao()!= null && 
-            Float.valueOf(reposta) <= sensor.getLimiteInfAtuacao()){
-            geraAlarme(sensor);
-            produzEvento(sensor);
-        }else{
-            desligaAtuadores(sensor);
+    private void trataResposta(String resposta){        
+        if (resposta != null){
+            if (this.sensorBean.getLimiteSupAtuacao()!= null && 
+                Float.valueOf(resposta) >= this.sensorBean.getLimiteSupAtuacao()){
+                geraAlarme(); 
+                produzEvento();
+            }else if (this.sensorBean.getLimiteInfAtuacao()!= null && 
+                Float.valueOf(resposta) <= this.sensorBean.getLimiteInfAtuacao()){
+                geraAlarme();
+                produzEvento();
+            }else{
+                desligaAtuadores();
+            }
         }
     }
     
-    private void geraAlarme(SensorBean sensor){
+    private void geraAlarme(){ 
         Runtime run = Runtime.getRuntime();
-        String alarme = " "+sensor.getAlarme().getDescricaoAlarme()+
-            "-"+sensor.getAmbiente().getDescricaoAmbiente();
+        String alarme = " "+this.sensorBean.getAlarme().getDescricaoAlarme()+
+            "-"+this.sensorBean.getAmbiente().getDescricaoAmbiente();
         MoradorMySQLDAO moradorMySQLDAO = new MoradorMySQLDAO();
         List listaMoradores = moradorMySQLDAO.listMoradorBean();
         MoradorBean moradorBean = null;
@@ -49,34 +54,30 @@ public class ClienteSupervisorio implements Runnable{
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        }
-        acionaAtuadores(sensor, "L");
+        }        
+        acionaAtuadores("L");
     }
     
-    private void acionaAtuadores(SensorBean sensor, String operacao){
+    private void acionaAtuadores(String operacao){
         AtuadorMySQLDAO atuadorMySQLDAO = new AtuadorMySQLDAO();
         List listaAtuadores = atuadorMySQLDAO.listAtuadorBean();
         AtuadorBean atuadorBean = null;
+        String comando = null;
         for(Object obj:listaAtuadores){
-            atuadorBean = (AtuadorBean) obj;
+            atuadorBean = (AtuadorBean) obj; 
             if (atuadorBean.getSensor() != null 
-                && atuadorBean.getSensor().getCodigoSensor().equals(sensor.getCodigoSensor())
-                && operacao.equals(atuadorBean.getComando())){
-                enviaRequisicao(atuadorBean.getAmbiente().getCodigoAmbiente()+
-                    atuadorBean.getCodigoAtuador()+
-                    atuadorBean.getComando()+
-                    atuadorBean.getPinoArduino());
+                && atuadorBean.getSensor().getCodigoSensor().equals(this.sensorBean.getCodigoSensor())){
+                this.requisicao = operacao + atuadorBean.getPinoArduino();
                 atuadorBean.setComando(operacao.equals("L")?"D":"L");
                 atuadorMySQLDAO.updateAtuadorBean(atuadorBean);
             }               
-        }        
+        }
     }
     
-    private void produzEvento(SensorBean sensor){        
-        
-        EventoIdBean eventoIdBean = new EventoIdBean();
-        eventoIdBean.setAlarme(sensor.getAlarme());
-        eventoIdBean.setSensor(sensor);
+    private void produzEvento(){  
+        EventoIdBean eventoIdBean = new EventoIdBean();        
+        eventoIdBean.setAlarme(this.sensorBean.getAlarme());
+        eventoIdBean.setSensor(this.sensorBean);
         
         EventoBean eventoBean = new EventoBean();
         eventoBean.setId(eventoIdBean);
@@ -87,28 +88,26 @@ public class ClienteSupervisorio implements Runnable{
         eventoMySQLDAO.saveEventoBean(eventoBean);
     }
     
-    private void desligaAtuadores(SensorBean sensor){
-        acionaAtuadores(sensor, "D");
+    private void desligaAtuadores(){
+        acionaAtuadores("D");
     }
     
-    public String enviaRequisicao(String str){
+    private String enviaRequisicao(){        
         Scanner entrada = null;
         PrintStream saida = null;
         String respostaServidor = null;
         try {
             entrada = new Scanner(this.connSocket.getInputStream());
             saida = new PrintStream(this.connSocket.getOutputStream());
-            saida.println(str);
+            saida.println(this.requisicao);
             saida.flush();
             while (entrada.hasNextLine()) {
                 respostaServidor = entrada.nextLine();
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        finally{
-           entrada.close();
-           saida.close();
+            entrada.close();
+            saida.close();
+           ex.printStackTrace();            
         }
         return respostaServidor;
     }
@@ -136,30 +135,31 @@ public class ClienteSupervisorio implements Runnable{
     public void run() {
         SensorMySQLDAO sensorMySQLDAO = new SensorMySQLDAO();
         List listaSensores = sensorMySQLDAO.listSensorBean();
-        SensorBean sensorBean = null;
-        String requisicao = null, 
-            resposta = null;
+        String requisicao = null,resposta;
         while(true){
             threadPausou();
+            resposta = null;
+            this.sensorBean = null;
             try {
                 this.connSocket = new Socket("127.0.0.1", 12345);
                 for(Object obj:listaSensores){
-                    sensorBean = (SensorBean) obj; 
-                    requisicao = "?"+sensorBean.getPinoArduino();
-                    resposta = enviaRequisicao(requisicao);
+                    this.sensorBean = (SensorBean) obj;
+                    if (this.requisicao == null){
+                        this.requisicao = "?"+this.sensorBean.getPinoArduino();
+                    }
+                    resposta = enviaRequisicao();
                     Thread.sleep(10);
                     if (resposta != null && 
-                        (!resposta.equals("L") || !resposta.equals("D"))){
-                        trataResposta(resposta, sensorBean);
-                    }
-                }              
-            } catch (IOException | InterruptedException ex) {
+                        (!resposta.equals("L") && !resposta.equals("D"))){
+                        trataResposta(resposta);                        
+                    }else{
+                        this.requisicao = null;
+                    }                   
+                }                
+            }catch (IOException | InterruptedException ex) {
+                ex.printStackTrace();                
                 System.exit(1);
-            }finally{
-                try {
-                    this.connSocket.close();
-                } catch (IOException ex) {}
-            }
+            }           
         }
     }
 }

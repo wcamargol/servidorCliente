@@ -51,7 +51,7 @@ public class PortaSerial implements SerialPortEventListener {
         try {            
             this.saida = portaSerial.getOutputStream();
                 this.saida.write(dados.getBytes());                
-                Thread.sleep(100);    
+                Thread.sleep(100);
         } catch (IOException | InterruptedException ex) {
             System.out.println("Problemas na execução do comando.");
         }
@@ -79,7 +79,7 @@ public class PortaSerial implements SerialPortEventListener {
                                     this.portaSerial.getInputStream()));
                     }
                     if (this.entrada.ready()){
-                        this.dadosRecebidos = this.entrada.readLine();
+                        this.dadosRecebidos = this.entrada.readLine();                        
                         break;
                     }
                 default:

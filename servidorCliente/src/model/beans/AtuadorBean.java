@@ -1,6 +1,5 @@
 package model.beans;
 
-
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Entity;

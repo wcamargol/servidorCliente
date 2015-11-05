@@ -23,6 +23,8 @@ public class AlarmeMySQLDAO{
             }
             }catch (HibernateException ex){
                 ex.printStackTrace();
+            }finally{
+                session.close();
             }
         }
         return alarme;

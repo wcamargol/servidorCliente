@@ -43,14 +43,14 @@ public class ServidorPortaSerial implements  Runnable{
     public void trataRequisicaoCliente(){
         Scanner vemDoCliente = null;
         PrintStream vaiParaCliente = null;
-        String strEntrada, strSaida = null;
+        String vaiPortaSerial, vemPortaSerial = null;
         try {
             vemDoCliente = new Scanner(this.connSocket.getInputStream());             
             vaiParaCliente = new PrintStream(this.connSocket.getOutputStream());        
-            strEntrada = vemDoCliente.nextLine();
-            portaSerial.escreverDados(strEntrada);
-            strSaida = portaSerial.lerDados();
-            vaiParaCliente.println(strSaida);            
+            vaiPortaSerial = vemDoCliente.nextLine();
+            portaSerial.escreverDados(vaiPortaSerial);
+            vemPortaSerial = portaSerial.lerDados();
+            vaiParaCliente.println(vemPortaSerial);            
         } catch (IOException ex) {
             ex.printStackTrace();
         }finally{
