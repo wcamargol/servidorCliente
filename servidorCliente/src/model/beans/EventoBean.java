@@ -22,7 +22,6 @@ public class EventoBean  implements Serializable {
     @ManyToOne
     @JoinColumn(name = "codigoSensor")
     private SensorBean sensor;
-    //private EventoIdBean id;
     
     @Id
     @ManyToOne
@@ -36,14 +35,6 @@ public class EventoBean  implements Serializable {
     @Id
     @Temporal(TemporalType.TIME)
     private Date horaEvento;
-
-    /*public EventoIdBean getId() {
-        return id;
-    }
-
-    public void setId(EventoIdBean id) {
-        this.id = id;
-    }*/
     
     public SensorBean getSensor() {
         return sensor;

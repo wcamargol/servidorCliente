@@ -33,10 +33,6 @@ public class SensorBean  implements Serializable {
     @OneToMany(mappedBy="sensor",fetch=FetchType.LAZY)
     private Collection<AtuadorBean> atuador;
     
-    /*@ManyToMany
-    @JoinTable(name="Evento", schema="SSHouse",
-        joinColumns=@JoinColumn(name="codigoSensor"),
-        inverseJoinColumns=@JoinColumn(name="codigoAtuacao"))*/
     @OneToMany(mappedBy="sensor",fetch=FetchType.LAZY)
     private Collection<EventoBean> eventos;
 
