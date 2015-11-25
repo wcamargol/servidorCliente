@@ -1,6 +1,5 @@
 package model.beans;
 
-
 import model.Hash;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;

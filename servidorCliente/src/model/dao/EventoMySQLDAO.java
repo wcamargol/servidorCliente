@@ -1,8 +1,9 @@
 package model.dao;
 
 import java.util.List;
+import model.beans.AlarmeBean;
 import model.beans.EventoBean;
-import model.beans.EventoIdBean;
+import model.beans.SensorBean;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,27 +13,40 @@ public class EventoMySQLDAO{
     
     private Session session;
     
-    public EventoBean getEventoBean(EventoIdBean id) {
-        EventoBean evento = null;
-        if(id != null){
+    public List getEventoBean(AlarmeBean alarme) {
+        List listEventos = null;
+        if(alarme != null){
             session = FabricaSessoes.getSession();
             try{
-                Query consulta = session.createQuery("select a from EventoBean a "
-                    + "where a.id.alarme.codigoAlarme = ? "
-                    + "and a.id.equipamento.codigoEquipamento = ? ");
-                consulta.setString(0, id.getAlarme().getCodigoAlarme());
-                consulta.setString(1, id.getSensor().getCodigoSensor());
-                List l = consulta.list();
-                if (!l.isEmpty()){
-                   evento = (EventoBean)l.get(0);
-                }
+                Query consulta = session.createQuery("select e from EventoBean e "
+                    + "where e.alarme.codigoAlarme = ? ");
+                consulta.setString(0, alarme.getCodigoAlarme());
+                listEventos = consulta.list();
             }catch (HibernateException ex){
                 ex.printStackTrace();
             }finally{
                 session.close();
             }
         }
-        return evento;
+        return listEventos;
+    }
+    
+    public List getEventoBean(SensorBean sensor) {
+        List listEventos = null;
+        if(sensor != null){
+            session = FabricaSessoes.getSession();
+            try{
+                Query consulta = session.createQuery("select e from EventoBean e "
+                    + "where e.sensor.codigoSensor = ? ");
+                consulta.setString(0, sensor.getCodigoSensor());
+                listEventos = consulta.list();
+            }catch (HibernateException ex){
+                ex.printStackTrace();
+            }finally{
+                session.close();
+            }
+        }
+        return listEventos;
     }
     
     public List listEventoBean(){

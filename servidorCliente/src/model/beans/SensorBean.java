@@ -3,13 +3,10 @@ package model.beans;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,7 +16,6 @@ import javax.persistence.Table;
 public class SensorBean  implements Serializable {
     
     @Id
-    @Column(name = "codigoSensor")
     private String codigoSensor;
     private String descricaoSensor;
     private String pinoArduino;
@@ -37,11 +33,12 @@ public class SensorBean  implements Serializable {
     @OneToMany(mappedBy="sensor",fetch=FetchType.LAZY)
     private Collection<AtuadorBean> atuador;
     
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(name="Evento", schema="SSHouse",
         joinColumns=@JoinColumn(name="codigoSensor"),
-        inverseJoinColumns=@JoinColumn(name="codigoAlarme"))
-    private Collection<AlarmeBean> alarmes;
+        inverseJoinColumns=@JoinColumn(name="codigoAtuacao"))*/
+    @OneToMany(mappedBy="sensor",fetch=FetchType.LAZY)
+    private Collection<EventoBean> eventos;
 
     public String getCodigoSensor() {
         return codigoSensor;
@@ -90,7 +87,7 @@ public class SensorBean  implements Serializable {
     public void setAmbiente(AmbienteBean ambiente) {
         this.ambiente = ambiente;
     }
-
+    
     public AlarmeBean getAlarme() {
         return alarme;
     }
@@ -106,12 +103,12 @@ public class SensorBean  implements Serializable {
     public void setAtuador(Collection<AtuadorBean> atuador) {
         this.atuador = atuador;
     }
-
-    public Collection<AlarmeBean> getAlarmes() {
-        return alarmes;
+    
+    public Collection<EventoBean> getEventos() {
+        return eventos;
     }
 
-    public void setAlarmes(Collection<AlarmeBean> alarmes) {
-        this.alarmes = alarmes;
+    public void setEventos(Collection<EventoBean> eventos) {
+        this.eventos = eventos;
     }
 }

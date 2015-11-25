@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Scanner;
 import model.beans.AtuadorBean;
 import model.beans.EventoBean;
-import model.beans.EventoIdBean;
 import model.beans.MoradorBean;
 import model.beans.SensorBean;
 import model.dao.AtuadorMySQLDAO;
@@ -74,13 +73,10 @@ public class ClienteSupervisorio implements Runnable{
         }
     }
     
-    private void produzEvento(){  
-        EventoIdBean eventoIdBean = new EventoIdBean();        
-        eventoIdBean.setAlarme(this.sensorBean.getAlarme());
-        eventoIdBean.setSensor(this.sensorBean);
-        
+    private void produzEvento(){         
         EventoBean eventoBean = new EventoBean();
-        eventoBean.setId(eventoIdBean);
+        eventoBean.setAlarme(this.sensorBean.getAlarme());
+        eventoBean.setSensor(this.sensorBean);
         eventoBean.setDataEvento(new Date());
         eventoBean.setHoraEvento(new Date());
         

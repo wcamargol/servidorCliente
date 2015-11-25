@@ -12,7 +12,6 @@
     <mapping class="model.beans.AmbienteBean"/>
     <mapping class="model.beans.AtuadorBean"/>
     <mapping class="model.beans.EventoBean"/>
-    <mapping class="model.beans.EventoIdBean"/>
     <mapping class="model.beans.MoradorBean"/>
     <mapping class="model.beans.OperacaoBean"/>
     <mapping class="model.beans.OperacaoIdBean"/>

@@ -18,7 +18,7 @@ public class OperacaoMySQLDAO{
             try{
                 Query consulta = session.createQuery("select a from OperacaoBean a "
                     + "where a.id.morador.login = ? "
-                    + "and a.id.atuador.codigoAtuador = ? ");
+                    + "and a.id.equipamento.codigoEquipamento = ? ");
                  consulta.setString(0, id.getMorador().getLogin());
                 consulta.setString(1, id.getAtuador().getCodigoAtuador());
                 List l = consulta.list();

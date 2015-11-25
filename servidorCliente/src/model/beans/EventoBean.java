@@ -6,7 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,8 +18,16 @@ import javax.persistence.TemporalType;
 @Table(name = "Evento")
 public class EventoBean  implements Serializable {
 
-    @EmbeddedId
-    private EventoIdBean id;
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "codigoSensor")
+    private SensorBean sensor;
+    //private EventoIdBean id;
+    
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "codigoAlarme")
+    private AlarmeBean alarme;
     
     @Id
     @Temporal(TemporalType.DATE)
@@ -26,12 +37,28 @@ public class EventoBean  implements Serializable {
     @Temporal(TemporalType.TIME)
     private Date horaEvento;
 
-    public EventoIdBean getId() {
+    /*public EventoIdBean getId() {
         return id;
     }
 
     public void setId(EventoIdBean id) {
         this.id = id;
+    }*/
+    
+    public SensorBean getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(SensorBean sensor) {
+        this.sensor = sensor;
+    }
+
+    public AlarmeBean getAlarme() {
+        return alarme;
+    }
+
+    public void setAlarme(AlarmeBean alarme) {
+        this.alarme = alarme;
     }
 
     public Date getDataEvento() {
